@@ -25,13 +25,13 @@ CREATE TABLE enrollments (
 
 
 -- Inserts student name & email to the students table
-INSERT INTO students (name, email) 
-VALUES ('Sufyan Mun', 'sufyanmun@outlook.com');
+INSERT INTO students (id, name, email) 
+VALUES (1, 'Sufyan Mun', 'sufyanmun@outlook.com');
 
 
 -- Inserts course name & description to the course table
-INSERT INTO courses (name, description) 
-VALUES ('Data Science', 'Understanding the foundations of Data Science');
+INSERT INTO courses (id, name, description) 
+VALUES (1, 'Data Science', 'Understanding the foundations of Data Science');
 
 
 -- Enrolls a student in a course:
@@ -43,3 +43,9 @@ FROM courses
 JOIN enrollments ON courses.id = enrollments.course_id
 WHERE enrollments.student_id = 1;
 
+-- List all students who are enrolled in a given course
+SELECT students.name
+FROM students
+JOIN enrollments
+ON students.id = enrollments.student_id
+WHERE enrollments.course_id = 1;
