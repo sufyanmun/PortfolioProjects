@@ -1,4 +1,4 @@
--- Create the database
+-- Creates the database
 CREATE DATABASE school;
 
 -- Connect to the database
@@ -38,8 +38,8 @@ VALUES ('Data Science', 'Understanding the foundations of Data Science');
 INSERT INTO enrollments (student_id, course_id) VALUES (1, 1);
 
 --Lists all courses that a given student is enrolled in
-SELECT c.name
-FROM courses c
-JOIN enrollments e ON c.id = e.course_id
-WHERE e.student_id = 1;
+SELECT name
+FROM courses 
+JOIN enrollments ON courses.id = enrollments.course_id
+WHERE enrollments.student_id = 1;
 
