@@ -1,9 +1,6 @@
 -- Creates the database
 CREATE DATABASE school;
 
--- Connect to the database
-USE school;
-
 -- Create the students table
 CREATE TABLE students (
   id INT PRIMARY KEY AUTO_INCREMENT,
