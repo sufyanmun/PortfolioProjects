@@ -37,33 +37,3 @@ SELECT
     MAX(ORDERDATE) AS Last_ORDER_Date
 FROM [PortfolioDB].[dbo].[Sales_Data]
 GROUP BY CUSTOMERNAME;
-
--- RFM Table Creation 
-DROP TABLE IF EXISTS #rfm
-;WITH rfm AS 
-(
-	SELECT 
-		CUSTOMERNAME, 
-		ROUND(SUM(sales), 2) MonetaryValue,
-		ROUND(AVG(sales), 2) AvgMonetaryValue,
-		COUNT(ORDERNUMBER) Frequency,
-		MAX(ORDERDATE) last_ORDER_date,
-		(SELECT MAX(ORDERDATE) FROM [PortfolioDB].[dbo].[Sales_Data]) max_ORDER_date,
-		DATEDIFF(DD, MAX(ORDERDATE), (SELECT MAX(ORDERDATE) FROM [PortfolioDB].[dbo].[Sales_Data])) Recency_of_Order
-	FROM [PortfolioDB].[dbo].[Sales_Data]
-	GROUP BY CUSTOMERNAME
-),
-RFM_Calculation AS
-(
-
-	select r.*,
-		NTILE(4) OVER (ORDER BY Recency_of_Order desc) RFM_Recency,
-		NTILE(4) OVER (ORDER BY Frequency) RFM_Frequency,
-		NTILE(4) OVER (ORDER BY MonetaryValue) RFM_Monetary
-	from rfm r
-)
-select 
-	s.*, RFM_Recency+ RFM_Frequency+ RFM_Monetary AS rfm_cell,
-	CAST(RFM_Recency AS varchar) + CAST(RFM_Frequency AS varchar) + CAST(RFM_Monetary  AS varchar)rfm_cell_string
-INTO #rfm
-FROM RFM_Calculation s
